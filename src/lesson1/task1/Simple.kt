@@ -3,6 +3,7 @@
 package lesson1.task1
 
 import java.lang.Math.pow
+import java.lang.Math.toRadians
 import kotlin.math.*
 
 /**
@@ -70,7 +71,7 @@ fun seconds(hours: Int, minutes: Int, seconds: Int): Int = hours * 3600 + minute
  * 1 сажень = 3 аршина = 48 вершков, 1 вершок = 4.445 см.
  */
 fun lengthInMeters(sagenes: Int, arshins: Int, vershoks: Int): Double {
-    val cm = sagenes * 48 * 4.445 + arshins * 16 * 4.445 + vershoks * 4.445
+    val cm = (sagenes * 48 + arshins * 16 + vershoks) * 4.445
     return cm / 100
 }
 
@@ -82,7 +83,7 @@ fun lengthInMeters(sagenes: Int, arshins: Int, vershoks: Int): Double {
  */
 fun angleInRadian(grad: Int, min: Int, sec: Int): Double {
     val deg = grad + min / 60.0 + sec / 3600.0
-    return Math.toRadians(deg) //deg / 180 * Math.PI
+    return toRadians(deg) //deg / 180 * Math.PI
 
 }
 
@@ -102,7 +103,7 @@ fun trackLength(x1: Double, y1: Double, x2: Double, y2: Double): Double {
  * Пользователь задает целое число, большее 100 (например, 3801).
  * Определить третью цифру справа в этом числе (в данном случае 8).
  */
-fun thirdDigit(number: Int): Int = TODO()
+fun thirdDigit(number: Int): Int = (number / 100) % 10
 
 /**
  * Простая
@@ -122,10 +123,15 @@ fun travelMinutes(hoursDepart: Int, minutesDepart: Int, hoursArrive: Int, minute
  * Сколько денег будет на счету через 3 года (с учётом сложных процентов)?
  * Например, 100 рублей под 10% годовых превратятся в 133.1 рубля
  */
-fun accountInThreeYears(initial: Int, percent: Int): Double {
-    val g1 = initial + initial * percent / 100.0
-    val g2 = g1 + g1 * percent / 100.0
-    return g2 + g2 * percent / 100.0
+fun accountInThreeYears(initial: Int, percent: Int): Double
+    {
+    var i = 1
+    var Sum = initial.toDouble()
+    for (i in 1..3)
+    {
+        Sum = Sum + Sum / 100.0 * percent
+    }
+    return Sum
 }
 
 /**
@@ -135,11 +141,7 @@ fun accountInThreeYears(initial: Int, percent: Int): Double {
  * Необходимо вывести число, полученное из заданного перестановкой цифр в обратном порядке (например, 874).
  */
 fun numberRevert(number: Int): Int {
-    var n = number
-    val c1 = n % 10
-    n = n / 10
-    val c2 = n % 10
-    n = n / 10
-    val c3 = n % 10
-    return c1*100+c2*10+c3
+    var s = number.toString()
+    s = s.reversed()
+    return s.toInt()
 }
