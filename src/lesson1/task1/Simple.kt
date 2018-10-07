@@ -126,12 +126,12 @@ fun travelMinutes(hoursDepart: Int, minutesDepart: Int, hoursArrive: Int, minute
 fun accountInThreeYears(initial: Int, percent: Int): Double
     {
     var i = 1
-    var Sum = initial.toDouble()
+    var sum = initial.toDouble()
     for (i in 1..3)
     {
-        Sum = Sum + Sum / 100.0 * percent
+        sum = sum + sum / 100.0 * percent
     }
-    return Sum
+    return sum
 }
 
 /**

@@ -141,9 +141,9 @@ fun rookOrBishopThreatens(kingX: Int, kingY: Int,
  */
 fun triangleKind(a: Double, b: Double, c: Double): Int {
     var r = 1
-    val d = max(max(a, b), c)
+    val d = maxOf(a, b, c)
     val e = min(min(max(a, b), max(b, c)), min(max(a, c), max(b, c)))
-    val f = min(min(a, b), c)
+    val f = minOf(a, b, c)
     val cosD = (sqr(e) + sqr(f) - sqr(d)) / (2 * e * f)
     if (cosD < 0) {r = 2} else if (cosD > 0) {r = 0}
     if (d > (e+f)) {r = -1}
