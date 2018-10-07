@@ -1,6 +1,7 @@
 @file:Suppress("UNUSED_PARAMETER")
 package lesson3.task1
 
+import lesson1.task1.sqr
 import kotlin.math.*
 
 /**
@@ -68,12 +69,12 @@ fun digitCountInNumber(n: Int, m: Int): Int =
  */
 fun digitNumber(n: Int): Int {
     var c = n
-    var res = 1
+    var res = 0
     while (c != 0) {
         c /= 10
         res += 1
     }
-    return res
+    if (n > 0) return res else return 1
 }
 
 /**
@@ -173,7 +174,19 @@ fun squareBetweenExists(m: Int, n: Int): Boolean = (floor(sqrt(n.toDouble())) - 
  * Написать функцию, которая находит, сколько шагов требуется для
  * этого для какого-либо начального X > 0.
  */
-fun collatzSteps(x: Int): Int = TODO()
+fun collatzSteps(x: Int): Int {
+    var c = x
+    var res = 0
+    while (c != 1) {
+        if (c % 2 == 0) {
+            c /= 2
+        } else {
+            c = c * 3 + 1
+        }
+        res += 1
+    }
+    return res
+}
 
 /**
  * Средняя
@@ -182,7 +195,18 @@ fun collatzSteps(x: Int): Int = TODO()
  * sin(x) = x - x^3 / 3! + x^5 / 5! - x^7 / 7! + ...
  * Нужную точность считать достигнутой, если очередной член ряда меньше eps по модулю
  */
-fun sin(x: Double, eps: Double): Double = TODO()
+fun sin(x: Double, eps: Double): Double {
+    var si = 0.0
+    var i = 1.0
+    var s = 1
+    var X = x % (2 * PI)
+    while ((Math.pow(X, i)) / factorial(i.toInt()) >= eps) {
+        si += s * Math.pow(X, i) / factorial(i.toInt())
+        s *= -1
+        i += 2
+    }
+    return si
+}
 
 /**
  * Средняя
@@ -191,7 +215,18 @@ fun sin(x: Double, eps: Double): Double = TODO()
  * cos(x) = 1 - x^2 / 2! + x^4 / 4! - x^6 / 6! + ...
  * Нужную точность считать достигнутой, если очередной член ряда меньше eps по модулю
  */
-fun cos(x: Double, eps: Double): Double = TODO()
+fun cos(x: Double, eps: Double): Double {
+    var с = 1.0
+    var i = 2.0
+    var s = -1
+    var X = x % (2 * PI)
+    while ((Math.pow(X, i)) / factorial(i.toInt()) >= eps) {
+        с += s * Math.pow(X, i) / factorial(i.toInt())
+        s *= -1
+        i += 2
+    }
+    return с
+}
 
 /**
  * Средняя
@@ -200,7 +235,15 @@ fun cos(x: Double, eps: Double): Double = TODO()
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun revert(n: Int): Int = TODO()
+fun revert(n: Int): Int {
+    var N = n
+    var revN = 0
+    while (N > 0) {
+        revN = 10 * revN + N % 10
+        N /= 10
+    }
+    return revN
+}
 
 /**
  * Средняя
@@ -211,7 +254,7 @@ fun revert(n: Int): Int = TODO()
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun isPalindrome(n: Int): Boolean = TODO()
+fun isPalindrome(n: Int): Boolean = (revert(n) == n)
 
 /**
  * Средняя
@@ -221,7 +264,19 @@ fun isPalindrome(n: Int): Boolean = TODO()
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun hasDifferentDigits(n: Int): Boolean = TODO()
+fun hasDifferentDigits(n: Int): Boolean {
+    var c = n
+    var res = false
+    if (c >= 10) {
+        while (c >= 10) {
+            if ((c > 10) && ((c % 10) != (c / 10 % 10))) {
+                res = true
+            }
+            c /= 10
+        }
+    }
+    return res
+}
 
 /**
  * Сложная
@@ -232,7 +287,21 @@ fun hasDifferentDigits(n: Int): Boolean = TODO()
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun squareSequenceDigit(n: Int): Int = TODO()
+fun squareSequenceDigit(n: Int): Int {
+    var k = 1
+    var i = 0
+    var N = n
+    while (N >= 0) {
+        i += 1
+        N += i * floor(sqrt((k - 1).toDouble())).toInt()
+        k *= 10
+        N -= i * floor(sqrt((k - 1).toDouble())).toInt()
+    }
+    var t = floor(sqrt((k - 1).toDouble())) + (N / i)
+    var el = -N % i
+    N = sqr(t).toInt()
+    return ((N / Math.pow(10.0, el.toDouble()).toInt()) % 10)
+}
 
 /**
  * Сложная
@@ -243,4 +312,20 @@ fun squareSequenceDigit(n: Int): Int = TODO()
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun fibSequenceDigit(n: Int): Int = TODO()
+fun fibSequenceDigit(n: Int): Int {
+    var N = 1
+    var i = 1
+    var k = 10
+    var a = 1
+    var b = 1
+    while (N < n) {
+        b = b + a
+        a = b - a
+        if (a / k != 0) {
+            i += 1
+            k *= 10
+        }
+        N += i
+    }
+    return (a / Math.pow(10.0, (N - n).toDouble()) % 10).toInt()
+}
