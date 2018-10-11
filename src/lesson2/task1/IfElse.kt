@@ -68,7 +68,7 @@ fun ageDescription(age: Int): String {
     var n = (age / 10) % 10
     if (n == 1) {return "$age лет"} else return when (age % 10) {
         1 -> "$age год"
-        2, 3, 4 -> "$age года"
+        in 2..4 -> "$age года"
         5, 6, 7, 8, 9, 0 -> "$age лет"
         else -> "?"
     }
