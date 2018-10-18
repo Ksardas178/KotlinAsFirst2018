@@ -1,4 +1,5 @@
 @file:Suppress("UNUSED_PARAMETER")
+
 package lesson2.task1
 
 import lesson1.task1.discriminant
@@ -66,10 +67,10 @@ fun minBiRoot(a: Double, b: Double, c: Double): Double {
  */
 fun ageDescription(age: Int): String {
     var n = (age / 10) % 10
-    if (n == 1) {return "$age лет"} else return when (age % 10) {
+    return if (n == 1) "$age лет" else when (age % 10) {
         1 -> "$age год"
         in 2..4 -> "$age года"
-        5, 6, 7, 8, 9, 0 -> "$age лет"
+        in 5..9, 0 -> "$age лет"
         else -> "?"
     }
 }
@@ -105,8 +106,12 @@ fun whichRookThreatens(kingX: Int, kingY: Int,
                        rookX1: Int, rookY1: Int,
                        rookX2: Int, rookY2: Int): Int {
     var danger = 0
-    if ((kingX == rookX1) || (kingY == rookY1)) {danger +=1}
-    if ((kingX == rookX2) || (kingY == rookY2)) {danger +=2}
+    if ((kingX == rookX1) || (kingY == rookY1)) {
+        danger += 1
+    }
+    if ((kingX == rookX2) || (kingY == rookY2)) {
+        danger += 2
+    }
     return danger
 }
 
@@ -124,8 +129,12 @@ fun rookOrBishopThreatens(kingX: Int, kingY: Int,
                           rookX: Int, rookY: Int,
                           bishopX: Int, bishopY: Int): Int {
     var danger = 0
-    if ((kingX == rookX) || (kingY == rookY)) {danger +=1}
-    if (abs(kingX - bishopX) == abs(bishopY - kingY)) {danger +=2}
+    if ((kingX == rookX) || (kingY == rookY)) {
+        danger += 1
+    }
+    if (abs(kingX - bishopX) == abs(bishopY - kingY)) {
+        danger += 2
+    }
     return danger
 }
 
@@ -143,8 +152,14 @@ fun triangleKind(a: Double, b: Double, c: Double): Int {
     val e = min(min(max(a, b), max(b, c)), min(max(a, c), max(b, c)))
     val f = minOf(a, b, c)
     val cosD = (sqr(e) + sqr(f) - sqr(d)) / (2 * e * f)
-    if (cosD < 0) {r = 2} else if (cosD > 0) {r = 0}
-    if (d > (e+f)) {r = -1}
+    if (cosD < 0) {
+        r = 2
+    } else if (cosD > 0) {
+        r = 0
+    }
+    if (d > (e + f)) {
+        r = -1
+    }
     return r
 }
 
@@ -158,6 +173,8 @@ fun triangleKind(a: Double, b: Double, c: Double): Int {
  */
 fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int {
     var l = min(b, d) - max(a, c)
-    if (l < 0) {l = -1}
+    if (l < 0) {
+        l = -1
+    }
     return l
 }

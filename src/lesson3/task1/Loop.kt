@@ -1,4 +1,5 @@
 @file:Suppress("UNUSED_PARAMETER")
+
 package lesson3.task1
 
 import lesson1.task1.sqr
@@ -39,7 +40,7 @@ fun isPrime(n: Int): Boolean {
  */
 fun isPerfect(n: Int): Boolean {
     var sum = 1
-    for (m in 2..n/2) {
+    for (m in 2..n / 2) {
         if (n % m > 0) continue
         sum += m
         if (sum > n) break
@@ -74,7 +75,7 @@ fun digitNumber(n: Int): Int {
         c /= 10
         res += 1
     }
-    if (n > 0) return res else return 1
+    return if (n != 0) res else 1
 }
 
 /**
@@ -90,7 +91,20 @@ fun fib(n: Int): Int {
         a = a + b
         b = b + a
     }
-    if (n % 2 == 0) return b else return a
+    return if (n % 2 == 0) b else a
+}
+
+fun lowDiv(m: Int, n: Int): Int {
+    var a = m
+    var b = n
+    while (a != b) {
+        if (max(a, b) == a) {
+            a = a - b
+        } else {
+            b = b - a
+        }
+    }
+    return a
 }
 
 /**
@@ -99,14 +113,7 @@ fun fib(n: Int): Int {
  * Для заданных чисел m и n найти наименьшее общее кратное, то есть,
  * минимальное число k, которое делится и на m и на n без остатка
  */
-fun lcm(m: Int, n: Int): Int {
-    var a = m
-    var b = n
-    while (a != b) {
-        if (max(a, b) == a) {a = a - b} else {b = b-a}
-    }
-    return m * n / min(a, b)
-}
+fun lcm(m: Int, n: Int): Int = m * n / lowDiv(m, n)
 
 /**
  * Простая
@@ -116,17 +123,18 @@ fun lcm(m: Int, n: Int): Int {
 fun minDivisor(n: Int): Int {
     var d = 1
     while ((n % d != 0) || (d == 1)) {
-        d += 1
-        }
+        d = if (n / 2 <= d) n else d + 1
+    }
     return d
 }
+
 /**
  * Простая
  *
  * Для заданного числа n > 1 найти максимальный делитель, меньший n
  */
 fun maxDivisor(n: Int): Int {
-    var d = n-1
+    var d = n / 2
     while (n % d != 0) {
         d -= 1
     }
@@ -140,14 +148,7 @@ fun maxDivisor(n: Int): Int {
  * Взаимно простые числа не имеют общих делителей, кроме 1.
  * Например, 25 и 49 взаимно простые, а 6 и 8 -- нет.
  */
-fun isCoPrime(m: Int, n: Int): Boolean {
-    var a = m
-    var b = n
-    while (a != b) {
-        if (max(a, b) == a) {a = a - b} else {b = b-a}
-    }
-    return (a * b == 1)
-}
+fun isCoPrime(m: Int, n: Int): Boolean = (lowDiv(m, n) == 1)
 
 /**
  * Простая
@@ -195,18 +196,19 @@ fun collatzSteps(x: Int): Int {
  * sin(x) = x - x^3 / 3! + x^5 / 5! - x^7 / 7! + ...
  * Нужную точность считать достигнутой, если очередной член ряда меньше eps по модулю
  */
-fun sin(x: Double, eps: Double): Double {
-    var si = 0.0
-    var i = 1.0
-    var s = 1
-    var X = x % (2 * PI)
-    while ((Math.pow(X, i)) / factorial(i.toInt()) >= eps) {
-        si += s * Math.pow(X, i) / factorial(i.toInt())
+fun neededFun(angle: Double, init: Double, eps: Double, sign: Int): Double {
+    var i = init
+    var s = sign
+    var result = 0.0
+    while ((Math.pow(angle, i)) / factorial(i.toInt()) >= eps) {
+        result += s * Math.pow(angle, i) / factorial(i.toInt())
         s *= -1
         i += 2
     }
-    return si
+    return result
 }
+
+fun sin(x: Double, eps: Double): Double = neededFun(x % (2 * PI), 1.0, eps, 1)
 
 /**
  * Средняя
@@ -215,18 +217,7 @@ fun sin(x: Double, eps: Double): Double {
  * cos(x) = 1 - x^2 / 2! + x^4 / 4! - x^6 / 6! + ...
  * Нужную точность считать достигнутой, если очередной член ряда меньше eps по модулю
  */
-fun cos(x: Double, eps: Double): Double {
-    var с = 1.0
-    var i = 2.0
-    var s = -1
-    var X = x % (2 * PI)
-    while ((Math.pow(X, i)) / factorial(i.toInt()) >= eps) {
-        с += s * Math.pow(X, i) / factorial(i.toInt())
-        s *= -1
-        i += 2
-    }
-    return с
-}
+fun cos(x: Double, eps: Double): Double = 1 + neededFun(x % (2 * PI), 2.0, eps, -1)
 
 /**
  * Средняя
@@ -236,11 +227,11 @@ fun cos(x: Double, eps: Double): Double {
  * Использовать операции со строками в этой задаче запрещается.
  */
 fun revert(n: Int): Int {
-    var N = n
+    var c = n
     var revN = 0
-    while (N > 0) {
-        revN = 10 * revN + N % 10
-        N /= 10
+    while (c > 0) {
+        revN = 10 * revN + c % 10
+        c /= 10
     }
     return revN
 }
@@ -266,16 +257,15 @@ fun isPalindrome(n: Int): Boolean = (revert(n) == n)
  */
 fun hasDifferentDigits(n: Int): Boolean {
     var c = n
-    var res = false
     if (c >= 10) {
         while (c >= 10) {
-            if ((c > 10) && ((c % 10) != (c / 10 % 10))) {
-                res = true
+            if ((c % 10) != (c / 10 % 10)) {
+                return true
             }
             c /= 10
         }
     }
-    return res
+    return false
 }
 
 /**
@@ -290,17 +280,17 @@ fun hasDifferentDigits(n: Int): Boolean {
 fun squareSequenceDigit(n: Int): Int {
     var k = 1
     var i = 0
-    var N = n
-    while (N >= 0) {
+    var с = n
+    while (с >= 0) {
         i += 1
-        N += i * floor(sqrt((k - 1).toDouble())).toInt()
+        с += i * floor(sqrt((k - 1).toDouble())).toInt()
         k *= 10
-        N -= i * floor(sqrt((k - 1).toDouble())).toInt()
+        с -= i * floor(sqrt((k - 1).toDouble())).toInt()
     }
-    var t = floor(sqrt((k - 1).toDouble())) + (N / i)
-    var el = -N % i
-    N = sqr(t).toInt()
-    return ((N / Math.pow(10.0, el.toDouble()).toInt()) % 10)
+    var t = floor(sqrt((k - 1).toDouble())) + (с / i)
+    var el = -с % i
+    с = sqr(t).toInt()
+    return ((с / Math.pow(10.0, el.toDouble()).toInt()) % 10)
 }
 
 /**
@@ -313,19 +303,19 @@ fun squareSequenceDigit(n: Int): Int {
  * Использовать операции со строками в этой задаче запрещается.
  */
 fun fibSequenceDigit(n: Int): Int {
-    var N = 1
+    var c = 1
     var i = 1
     var k = 10
     var a = 1
     var b = 1
-    while (N < n) {
+    while (c < n) {
         b = b + a
         a = b - a
         if (a / k != 0) {
             i += 1
             k *= 10
         }
-        N += i
+        c += i
     }
-    return (a / Math.pow(10.0, (N - n).toDouble()) % 10).toInt()
+    return (a / Math.pow(10.0, (c - n).toDouble()) % 10).toInt()
 }
