@@ -121,8 +121,8 @@ fun lcm(m: Int, n: Int): Int = m * n / lowDiv(m, n)
  * Для заданного числа n > 1 найти минимальный делитель, превышающий 1
  */
 fun minDivisor(n: Int): Int {
-    var d = 1
-    while ((n % d != 0) || (d == 1)) {
+    var d = 2
+    while (n % d != 0) {
         d = if (n / 2 <= d) n else d + 1
     }
     return d
@@ -157,7 +157,7 @@ fun isCoPrime(m: Int, n: Int): Boolean = (lowDiv(m, n) == 1)
  * то есть, существует ли такое целое k, что m <= k*k <= n.
  * Например, для интервала 21..28 21 <= 5*5 <= 28, а для интервала 51..61 квадрата не существует.
  */
-fun squareBetweenExists(m: Int, n: Int): Boolean = (floor(sqrt(n.toDouble())) - floor(sqrt(m.toDouble() - 0.5)) > 0)
+fun squareBetweenExists(m: Int, n: Int): Boolean = (ceil(sqrt(n.toDouble() + 0.5)) - ceil(sqrt(m.toDouble())) > 0)
 
 /**
  * Средняя
@@ -200,7 +200,7 @@ fun neededFun(angle: Double, init: Double, eps: Double, sign: Int): Double {
     var i = init
     var s = sign
     var result = 0.0
-    while ((Math.pow(angle, i)) / factorial(i.toInt()) >= eps) {
+    while (abs((Math.pow(angle, i)) / factorial(i.toInt())) >= eps) {
         result += s * Math.pow(angle, i) / factorial(i.toInt())
         s *= -1
         i += 2
@@ -309,7 +309,7 @@ fun fibSequenceDigit(n: Int): Int {
     var a = 1
     var b = 1
     while (c < n) {
-        b = b + a
+        b += a
         a = b - a
         if (a / k != 0) {
             i += 1
