@@ -292,9 +292,9 @@ fun squareSequenceDigit(n: Int): Int {
     Из наибольшего из i-значных чисел вычтем расстояние до N в числах
     (N отрицательное, см. цикл), получим корень из числа, где присутствует искомая цифра
     */
-    var el = -с % i
+    var el = i + (с % i)
     с = sqr(t).toInt()
-    return ((с / Math.pow(10.0, el.toDouble()).toInt()) % 10)
+    return (с / Math.pow(10.0, (i - el).toDouble()).toInt() % 10)
 }
 
 /**
