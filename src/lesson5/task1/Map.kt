@@ -107,15 +107,14 @@ fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<S
  *     -> mapOf(5 to listOf("Семён", "Михаил"), 3 to listOf("Марат"))
  */
 
-fun buildGrades(grades: Map<String, Int>): Map<Int, List<String>> = TODO()
-/*
-{
-    var list: Map<Int, List<String>>
-    for ((name,gr) in grades) {
-        list[gr][0] = name
+fun buildGrades(grades: Map<String, Int>): Map<Int, List<String>> {
+    var st = mutableMapOf<Int, MutableList<String>>()
+    for ((student, grade) in grades) {
+        if (st[grade] == null) st[grade] = mutableListOf(student) else st[grade]?.add(student)
     }
+    return st
 }
-*/
+
 /**
  * Простая
  *

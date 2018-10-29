@@ -4,6 +4,7 @@ package lesson3.task1
 
 import lesson1.task1.sqr
 import kotlin.math.*
+import java.lang.Math.pow
 
 /**
  * Пример
@@ -200,8 +201,8 @@ fun neededFun(angle: Double, entI: Double, eps: Double, sign: Int): Double {
     var i = entI
     var s = sign
     var result = 0.0
-    while (abs((Math.pow(angle, i)) / factorial(i.toInt())) >= eps) {
-        result += s * Math.pow(angle, i) / factorial(i.toInt())
+    while (abs((pow(angle, i)) / factorial(i.toInt())) >= eps) {
+        result += s * pow(angle, i) / factorial(i.toInt())
         s *= -1
         i += 2
     }
@@ -294,7 +295,7 @@ fun squareSequenceDigit(n: Int): Int {
     */
     var el = i + (с % i)
     с = sqr(t).toLong()
-    return (с / Math.pow(10.0, (i - el).toDouble()).toInt() % 10).toInt()
+    return (с / pow(10.0, (i - el).toDouble()).toInt() % 10).toInt()
 }
 
 /**
@@ -321,5 +322,5 @@ fun fibSequenceDigit(n: Int): Int {
         }
         c += i
     }
-    return (a / Math.pow(10.0, (c - n).toDouble()) % 10).toInt()
+    return (a / pow(10.0, (c - n).toDouble()) % 10).toInt()
 }
