@@ -146,7 +146,7 @@ fun mean(list: List<Double>) = if (list.isEmpty()) {
 
 fun center(list: MutableList<Double>): MutableList<Double> {
     val m = mean(list)
-    for (i in 0..list.size) {
+    for (i in 0 until list.size) {
         list[i] -= m
     }
     return list
@@ -251,6 +251,7 @@ fun convert(n: Int, base: Int): List<Int> {
         l.add(c % base)
         c /= base
     }
+    if (l.isEmpty()) l.add(0)
     return l.asReversed()
 }
 
@@ -265,12 +266,12 @@ fun convert(n: Int, base: Int): List<Int> {
 fun convertToString(n: Int, base: Int): String {
     val l = convert(n, base)
     var s = ""
-    for (i in 0..(l.size - 1)) {
+    for (i in 0 until l.size) {
         s += if (l[i] < 10) {
             l[i]
         } else (l[i] + 87).toChar()
     }
-    return s
+    return if (s == "") "0" else s
 }
 
 /**
@@ -282,7 +283,7 @@ fun convertToString(n: Int, base: Int): String {
  */
 fun decimal(digits: List<Int>, base: Int): Int {
     var r = 0
-    for (i in 0..(digits.size - 1)) {
+    for (i in 0 until digits.size) {
         r *= base
         r += digits[i]
     }
@@ -300,7 +301,7 @@ fun decimal(digits: List<Int>, base: Int): Int {
  */
 fun decimalFromString(str: String, base: Int): Int {
     var r = 0
-    for (i in 0..(str.length - 1)) {
+    for (i in 0 until str.length) {
         r *= base
         r += if (str[i] <= '9') {
             str[i].toInt() - 48

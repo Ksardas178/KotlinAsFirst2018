@@ -196,8 +196,8 @@ fun collatzSteps(x: Int): Int {
  * sin(x) = x - x^3 / 3! + x^5 / 5! - x^7 / 7! + ...
  * Нужную точность считать достигнутой, если очередной член ряда меньше eps по модулю
  */
-fun neededFun(angle: Double, init: Double, eps: Double, sign: Int): Double {
-    var i = init
+fun neededFun(angle: Double, entI: Double, eps: Double, sign: Int): Double {
+    var i = entI
     var s = sign
     var result = 0.0
     while (abs((Math.pow(angle, i)) / factorial(i.toInt())) >= eps) {
