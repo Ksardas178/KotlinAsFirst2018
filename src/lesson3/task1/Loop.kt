@@ -278,10 +278,10 @@ fun hasDifferentDigits(n: Int): Boolean {
  * Использовать операции со строками в этой задаче запрещается.
  */
 fun squareSequenceDigit(n: Int): Int {
-    var k = 1
-    var i = 0
-    var с = n
-    while (с >= 0) {
+    var k = 1L
+    var i = 0L
+    var с = n.toLong()
+    while (с > 0) {
         i += 1
         с += i * floor(sqrt((k - 1).toDouble())).toInt() //Прибавляем все цифры чисел, которые не надо было отнимать чуть ниже
         k *= 10
@@ -293,8 +293,8 @@ fun squareSequenceDigit(n: Int): Int {
     (N отрицательное, см. цикл), получим корень из числа, где присутствует искомая цифра
     */
     var el = i + (с % i)
-    с = sqr(t).toInt()
-    return (с / Math.pow(10.0, (i - el).toDouble()).toInt() % 10)
+    с = sqr(t).toLong()
+    return (с / Math.pow(10.0, (i - el).toDouble()).toInt() % 10).toInt()
 }
 
 /**
@@ -309,13 +309,13 @@ fun squareSequenceDigit(n: Int): Int {
 fun fibSequenceDigit(n: Int): Int {
     var c = 1
     var i = 1
-    var k = 10
+    var k = 1
     var a = 1
     var b = 1
     while (c < n) {
         b += a
         a = b - a
-        if (a / k != 0) {
+        if (a / k >= 10) {
             i += 1
             k *= 10
         }
