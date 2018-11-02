@@ -94,7 +94,25 @@ fun buildWordSet(text: List<String>): MutableSet<String> {
  *     mapOf("Emergency" to "911", "Police" to "02")
  *   ) -> mapOf("Emergency" to "112, 911", "Police" to "02")
  */
-fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<String, String> = TODO()
+
+fun addPhone(mapA: Map<String, String>, mapB: Map<String, String>, needed: MutableMap<String, MutableList<String>>) {
+    for ((nameA, numberA) in mapA) needed[nameA] = mutableListOf(numberA)
+    for ((nameB, numberB) in mapB) {
+        if (needed[nameB] != null) {
+            if (numberB != mapA[nameB]) needed[nameB]?.add(numberB)
+        } else needed[nameB] = mutableListOf(numberB)
+    }
+}
+
+fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<String, String> {
+    val needed = mutableMapOf<String, MutableList<String>>()
+    val res = mutableMapOf<String, String>()
+    addPhone(mapA, mapB, needed)
+    for ((name, number) in needed) {
+        res[name] = number.joinToString(separator = ", ")
+    }
+    return res
+}
 
 /**
  * Простая
@@ -155,8 +173,8 @@ fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Doub
     for ((name, cost) in stockPrices) {
         if (prod[name] == null) prod[name] = mutableListOf(cost) else prod[name]?.add(cost)
     }
-    for ((name, cost) in aver) {
-        if (prod[name] != null) aver[name] = mean(prod[name]!!)
+    for ((name, cost) in prod) {
+        aver[name] = mean(prod[name]!!)
     }
     return aver
 }
