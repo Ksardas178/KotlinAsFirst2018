@@ -202,7 +202,7 @@ fun neededFun(angle: Double, entI: Double, eps: Double, sign: Int): Double {
     var s = sign
     var result = 0.0
     while (abs((pow(angle, i)) / factorial(i.toInt())) >= eps) {
-        result += s * pow(angle, i) / factorial(i.toInt())
+        result += s * angle.pow(i) / factorial(i.toInt())
         s *= -1
         i += 2
     }
@@ -258,13 +258,11 @@ fun isPalindrome(n: Int): Boolean = (revert(n) == n)
  */
 fun hasDifferentDigits(n: Int): Boolean {
     var c = n
-    if (c >= 10) {
-        while (c >= 10) {
-            if ((c % 10) != (c / 10 % 10)) {
-                return true
-            }
-            c /= 10
+    while (c >= 10) {
+        if ((c % 10) != (c / 10 % 10)) {
+            return true
         }
+        c /= 10
     }
     return false
 }

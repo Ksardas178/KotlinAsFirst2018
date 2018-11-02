@@ -4,6 +4,7 @@ package lesson4.task1
 
 import lesson1.task1.discriminant
 import lesson1.task1.sqr
+import kotlin.math.pow
 import kotlin.math.sqrt
 
 /**
@@ -162,7 +163,7 @@ fun center(list: MutableList<Double>): MutableList<Double> {
 fun times(a: List<Double>, b: List<Double>): Double {
     var r = 0.0
     if (a.size * b.size == 0) return 0.0 else {
-        for (i in 0..(a.size - 1)) {
+        for (i in 0 until a.size) {
             r += a[i] * b[i]
         }
         return r
@@ -180,7 +181,7 @@ fun times(a: List<Double>, b: List<Double>): Double {
 fun polynom(p: List<Double>, x: Double): Double {
     var r = 0.0
     for (i in 0..(p.size - 1)) {
-        r += p[i] * Math.pow(x, i.toDouble())
+        r += p[i] * x.pow(i.toDouble())
     }
     return r
 }
@@ -196,7 +197,7 @@ fun polynom(p: List<Double>, x: Double): Double {
  * Обратите внимание, что данная функция должна изменять содержание списка list, а не его копии.
  */
 fun accumulate(list: MutableList<Double>): MutableList<Double> {
-    for (i in 1..(list.size - 1)) {
+    for (i in 1 until list.size) {
         list[i] += list[i - 1]
     }
     return list
@@ -212,12 +213,13 @@ fun accumulate(list: MutableList<Double>): MutableList<Double> {
 fun factorize(n: Int): List<Int> {
     var c = n
     val l = mutableListOf<Int>()
-    for (i in 2..n) {
+    for (i in 2..(n / 2)) {
         while (c % i == 0) {
             c /= i
             l.add(i)
         }
     }
+    if (l.isEmpty()) l.add(n)
     return l
 }
 
@@ -228,14 +230,7 @@ fun factorize(n: Int): List<Int> {
  * Результат разложения вернуть в виде строки, например 75 -> 3*5*5
  * Множители в результирующей строке должны располагаться по возрастанию.
  */
-fun factorizeToString(n: Int): String {
-    val l = factorize(n)
-    var s = l[0].toString()
-    for (i in 1..(l.size - 1)) {
-        s += "*" + l[i]
-    }
-    return s
-}
+fun factorizeToString(n: Int): String = factorize(n).joinToString(separator = "*")
 
 /**
  * Средняя
@@ -269,7 +264,7 @@ fun convertToString(n: Int, base: Int): String {
     for (i in 0 until l.size) {
         s += if (l[i] < 10) {
             l[i]
-        } else (l[i] + 87).toChar()
+        } else (l[i] + 'a'.toInt() - 10).toChar()
     }
     return if (s == "") "0" else s
 }
@@ -304,9 +299,9 @@ fun decimalFromString(str: String, base: Int): Int {
     for (i in 0 until str.length) {
         r *= base
         r += if (str[i] <= '9') {
-            str[i].toInt() - 48
+            str[i].toInt() - '0'.toInt()
         } else {
-            str[i].toInt() - 87
+            str[i].toInt() - 'a'.toInt() + 10
         }
     }
     return r
