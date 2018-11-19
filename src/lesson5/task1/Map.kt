@@ -194,7 +194,17 @@ fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Doub
  *     "печенье"
  *   ) -> "Мария"
  */
-fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): String? = TODO()
+fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): String? {
+    var s = ""
+    var cost = 0.0
+    for ((name, pair) in stuff) {
+        if ((pair.first == kind) && ((pair.second < cost) || (cost == 0.0))) {
+            s = name
+            cost = pair.second
+        }
+    }
+    return if (s != "") s else null
+}
 
 /**
  * Сложная
@@ -220,8 +230,24 @@ fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): S
  *          "Mikhail" to setOf("Sveta", "Marat")
  *        )
  */
-fun propagateHandshakes(friends: Map<String, Set<String>>): Map<String, Set<String>> = TODO()
+fun whoAreNotInFirst(a: List<String>, b: List<String>): List<String> {
+    var list = mutableListOf<String>()
+    for (man in b) {
+        if (!a.contains(man)) {
+            if (list.isEmpty()) list = mutableListOf(man) else list.add(man)
+        }
+    }
+    return list
+}
 
+fun propagateHandshakes(friends: Map<String, Set<String>>): Map<String, Set<String>> = TODO() /*{
+    for (q in friends)
+        for (friend in friends) {
+
+        }
+    return
+}
+*/
 /**
  * Простая
  *
@@ -236,14 +262,26 @@ fun propagateHandshakes(friends: Map<String, Set<String>>): Map<String, Set<Stri
  *   subtractOf(a = mutableMapOf("a" to "z"), mapOf("a" to "z"))
  *     -> a changes to mutableMapOf() aka becomes empty
  */
-fun subtractOf(a: MutableMap<String, String>, b: Map<String, String>): Unit = TODO()
+fun subtractOf(a: MutableMap<String, String>, b: Map<String, String>): Unit {
+    for ((k, el) in b)
+        if (a[k] == el) a.remove(k)
+
+}
 
 /**
  * Простая
  *
  * Для двух списков людей найти людей, встречающихся в обоих списках
  */
-fun whoAreInBoth(a: List<String>, b: List<String>): List<String> = TODO()
+fun whoAreInBoth(a: List<String>, b: List<String>): List<String> {
+    var list = mutableListOf<String>()
+    for (man in a) {
+        if (b.contains(man)) {
+            if (list.isEmpty()) list = mutableListOf(man) else list.add(man)
+        }
+    }
+    return list
+}
 
 /**
  * Средняя
@@ -254,7 +292,12 @@ fun whoAreInBoth(a: List<String>, b: List<String>): List<String> = TODO()
  * Например:
  *   canBuildFrom(listOf('a', 'b', 'o'), "baobab") -> true
  */
-fun canBuildFrom(chars: List<Char>, word: String): Boolean = TODO()
+fun canBuildFrom(chars: List<Char>, word: String): Boolean {
+    for (c in word) {
+        if (!chars.contains(c)) return false
+    }
+    return true
+}
 
 /**
  * Средняя
@@ -268,7 +311,13 @@ fun canBuildFrom(chars: List<Char>, word: String): Boolean = TODO()
  * Например:
  *   extractRepeats(listOf("a", "b", "a")) -> mapOf("a" to 2)
  */
-fun extractRepeats(list: List<String>): Map<String, Int> = TODO()
+
+fun extractRepeats(list: List<String>): Map<String, Int> {
+    var m = mutableMapOf<String, Int>()
+    for (el in list)
+        if (m[el] == null) m[el] = 1 else m[el] = m[el]!! + 1
+    return m.filterValues { it >= 2 }
+}
 
 /**
  * Средняя
@@ -279,7 +328,14 @@ fun extractRepeats(list: List<String>): Map<String, Int> = TODO()
  * Например:
  *   hasAnagrams(listOf("тор", "свет", "рот")) -> true
  */
-fun hasAnagrams(words: List<String>): Boolean = TODO()
+fun hasAnagrams(words: List<String>): Boolean {
+    var m = mutableMapOf<Char, Int>()
+    for (word in words) {
+        for (el in word)
+            if (m[el] == null) m[el] = 1 else m[el] = m[el]!! + 1
+    }
+    return true
+}
 
 /**
  * Сложная
