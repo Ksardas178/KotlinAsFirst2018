@@ -4,6 +4,7 @@ package lesson4.task1
 
 import lesson1.task1.discriminant
 import lesson1.task1.sqr
+import java.lang.StringBuilder
 import kotlin.math.pow
 import kotlin.math.sqrt
 
@@ -162,12 +163,10 @@ fun center(list: MutableList<Double>): MutableList<Double> {
  */
 fun times(a: List<Double>, b: List<Double>): Double {
     var r = 0.0
-    if (a.size * b.size == 0) return 0.0 else {
-        for (i in 0 until a.size) {
-            r += a[i] * b[i]
-        }
-        return r
+    for (i in 0 until a.size) {
+        r += a[i] * b[i]
     }
+    return r
 }
 
 /**
@@ -259,14 +258,14 @@ fun convert(n: Int, base: Int): List<Int> {
  * Например: n = 100, base = 4 -> 1210, n = 250, base = 14 -> 13c
  */
 fun convertToString(n: Int, base: Int): String {
+    val sb = StringBuilder()
     val l = convert(n, base)
-    var s = ""
     for (i in 0 until l.size) {
-        s += if (l[i] < 10) {
+        sb.append(if (l[i] < 10) {
             l[i]
-        } else (l[i] + 'a'.toInt() - 10).toChar()
+        } else (l[i] + 'a'.toInt() - 10).toChar())
     }
-    return if (s == "") "0" else s
+    return if (sb == null) "0" else sb.toString()
 }
 
 /**
@@ -392,6 +391,7 @@ fun russIn3Min(n: Int): String {
 }
 
 fun russian(n: Int): String {
+
     return when (n / 1000 % 10) {
         1 -> russIn3Max(n / 1000) + "тысяча " + russIn3Min(n % 1000)
         in 2..4 -> russIn3Max(n / 1000) + "тысячи " + russIn3Min(n % 1000)
