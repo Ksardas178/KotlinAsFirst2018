@@ -126,7 +126,7 @@ fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<S
  */
 
 fun buildGrades(grades: Map<String, Int>): Map<Int, List<String>> {
-    var st = mutableMapOf<Int, MutableList<String>>()
+    val st = mutableMapOf<Int, MutableList<String>>()
     for ((student, grade) in grades) {
         if (st[grade] == null) st[grade] = mutableListOf(student) else st[grade]?.add(student)
     }
@@ -168,8 +168,8 @@ fun mean(list: MutableList<Double>) = if (list.isEmpty()) {
 }
 
 fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Double> {
-    var prod = mutableMapOf<String, MutableList<Double>>()
-    var aver = mutableMapOf<String, Double>()
+    val prod = mutableMapOf<String, MutableList<Double>>()
+    val aver = mutableMapOf<String, Double>()
     for ((name, cost) in stockPrices) {
         if (prod[name] == null) prod[name] = mutableListOf(cost) else prod[name]?.add(cost)
     }
@@ -313,7 +313,7 @@ fun canBuildFrom(chars: List<Char>, word: String): Boolean {
  */
 
 fun extractRepeats(list: List<String>): Map<String, Int> {
-    var m = mutableMapOf<String, Int>()
+    val m = mutableMapOf<String, Int>()
     for (el in list)
         if (m[el] == null) m[el] = 1 else m[el] = m[el]!! + 1
     return m.filterValues { it >= 2 }
@@ -329,7 +329,7 @@ fun extractRepeats(list: List<String>): Map<String, Int> {
  *   hasAnagrams(listOf("тор", "свет", "рот")) -> true
  */
 fun hasAnagrams(words: List<String>): Boolean {
-    var m = mutableMapOf<Char, Int>()
+    val m = mutableMapOf<Char, Int>()
     for (word in words) {
         for (el in word)
             if (m[el] == null) m[el] = 1 else m[el] = m[el]!! + 1

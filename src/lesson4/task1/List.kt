@@ -265,7 +265,7 @@ fun convertToString(n: Int, base: Int): String {
             l[i]
         } else (l[i] + 'a'.toInt() - 10).toChar())
     }
-    return if (sb == null) "0" else sb.toString()
+    return sb.toString()
 }
 
 /**
@@ -314,7 +314,35 @@ fun decimalFromString(str: String, base: Int): Int {
  * 90 = XC, 100 = C, 400 = CD, 500 = D, 900 = CM, 1000 = M.
  * Например: 23 = XXIII, 44 = XLIV, 100 = C
  */
-fun roman(n: Int): String = TODO()
+fun rF(n: Int) = when (n) {
+    0 -> null
+    1 -> ""
+    2 -> ""
+    3 -> ""
+    4 -> ""
+    else -> ""
+}
+
+fun roman(n: Int): String {
+    var i = 0
+    val sb = StringBuilder()
+    val s10 = listOf("I", "X", "C", "M")
+    val s5 = listOf("V", "L", "D")
+    //val so = listOf("IV", "IX", "XL", "XC", "CD", "CM")
+    val num = convert(n, 10).reversed()
+    for (base in num) {
+        when (base) {
+            in 0..3 -> for (j in 1..base) sb.append(s10[i])
+            4 -> sb.append(s5[i] + s10[i])
+            in 5..8 -> {
+                for (j in 6..base) sb.append(s10[i]); sb.append(s5[i])
+            }
+            9 -> sb.append(s10[i + 1] + s10[i])
+        }
+        i += 1
+    }
+    return sb.toString().reversed()
+}
 
 /**
  * Очень сложная
@@ -323,79 +351,85 @@ fun roman(n: Int): String = TODO()
  * Например, 375 = "триста семьдесят пять",
  * 23964 = "двадцать три тысячи девятьсот шестьдесят четыре"
  */
-fun russFirstExc(n: Int): String = when (n) {
-    1 -> "одиннадцать"
-    2 -> "двенадцать"
-    3 -> "тринадцать"
-    4 -> "четырнадцать"
-    5 -> "пятнадцать"
-    6 -> "шестнадцать"
-    7 -> "семнадцать"
-    8 -> "восемнадцать"
-    9 -> "девятнадцать"
-    else -> ""
-}
 
-fun russFirstMin(n: Int): String = when (n) {
-    1 -> "один"
-    2 -> "два"
+fun rF3(n: Int) = when (n) {
+    0 -> null
+    1 -> "одна"
+    2 -> "две"
     3 -> "три"
     4 -> "четыре"
     5 -> "пять"
     6 -> "шесть"
     7 -> "семь"
     8 -> "восемь"
-    9 -> "девять"
-    else -> ""
+    else -> "девять"
 }
 
-fun russFirstMax(n: Int): String = when (n) {
-    1 -> "одна "
-    2 -> "две "
-    else -> russFirstMin(n) + ' '
+fun rL3(n: Int) = when (n) {
+    1 -> "один"
+    2 -> "два"
+    else -> rF3(n)
 }
 
-fun russSecond(n: Int): String = when (n) {
-    1 -> "десять "
-    2 -> "двадцать "
-    3 -> "тридцать "
-    4 -> "сорок "
-    in 5..8 -> russFirstMin(n) + "десят "
-    9 -> "девяносто "
-    else -> ""
+fun rF2(n: Int) = when (n) {
+    0 -> null
+    1 -> "десять"
+    2 -> "двадцать"
+    3 -> "тридцать"
+    4 -> "сорок"
+    9 -> "девяносто"
+    else -> rF3(n) + "десят"
 }
 
-fun russThird(n: Int): String = when (n) {
-    1 -> "сто "
-    2 -> "двести "
-    3 -> "триста "
-    4 -> "четыреста "
-    in 5..9 -> russFirstMin(n) + "сот "
-    else -> ""
+fun rF1(n: Int) = when (n) {
+    0 -> null
+    1 -> "сто"
+    2 -> "двести"
+    3 -> "триста"
+    4 -> "четыреста"
+    else -> rF3(n) + "сот"
 }
 
-fun russIn3Max(n: Int): String {
-    return if (n / 10 % 10 != 1) {
-        russThird(n / 100) + russSecond(n / 10 % 10) + russFirstMax(n % 10)
-    } else {
-        russThird(n / 100) + russFirstExc(n % 10)
-    }
+fun rExc(n: Int) = when (n) {
+    12 -> "две"
+    14 -> "четыр"
+    15 -> "пят"
+    16 -> "шест"
+    17 -> "сем"
+    18 -> "восем"
+    19 -> "девят"
+    else -> rL3(n)
+} + "надцать"
+
+fun russLast3(n: Int): List<String> {
+    val num = mutableListOf<String>()
+    if (rF1(n / 100) != null) num.add(rF1(n / 100)!!)
+    if ((n % 100 > 19) || (n % 100 < 11)) {
+        if (rF2(n / 10 % 10) != null) num.add(rF2(n / 10 % 10)!!)
+        if (rF3(n % 10) != null) num.add(rL3(n % 10)!!)
+    } else num.add(rExc(n % 100))
+    return num
 }
 
-fun russIn3Min(n: Int): String {
-    return if (n / 10 % 10 != 1) {
-        russThird(n / 100) + russSecond(n / 10 % 10) + russFirstMin(n % 10)
-    } else {
-        russThird(n / 100) + russFirstExc(n % 10)
-    }
+fun russFirst3(n: Int): List<String> {
+    val num = mutableListOf<String>()
+    if (rF1(n / 100) != null) num.add(rF1(n / 100)!!)
+    if ((n % 100 > 19) || (n % 100 < 11)) {
+        if (rF2(n / 10 % 10) != null) num.add(rF2(n / 10 % 10)!!)
+        if (rF3(n % 10) != null) num.add(rF3(n % 10)!!)
+    } else num.add(rExc(n % 100))
+    return num
 }
 
 fun russian(n: Int): String {
-
-    return when (n / 1000 % 10) {
-        1 -> russIn3Max(n / 1000) + "тысяча " + russIn3Min(n % 1000)
-        in 2..4 -> russIn3Max(n / 1000) + "тысячи " + russIn3Min(n % 1000)
-        in 5..9 -> russIn3Max(n / 1000) + "тысяч " + russIn3Min(n % 1000)
-        else -> russIn3Min(n % 1000)
+    val num = mutableListOf<String>()
+    num += russFirst3(n / 1000)
+    if (n / 1000 != 0) num += when (n / 1000 % 10) {
+        1 -> "тысяча"
+        in 2..4 -> "тысячи"
+        else -> "тысяч"
     }
+    num += russLast3(n % 1000)
+    //println(num.joinToString(separator = " "))
+    return num.joinToString(separator = " ")
 }
