@@ -230,24 +230,26 @@ fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): S
  *          "Mikhail" to setOf("Sveta", "Marat")
  *        )
  */
-fun whoAreNotInFirst(a: List<String>, b: List<String>): List<String> {
-    var list = mutableListOf<String>()
+
+fun whoAreNotInFirst(a: Set<String>?, b: Set<String>, name: String): Set<String> {
+    var list = mutableSetOf<String>()
     for (man in b) {
-        if (!a.contains(man)) {
-            if (list.isEmpty()) list = mutableListOf(man) else list.add(man)
+        if (!(a!!.contains(man)) && (man != name)) {
+            if (list.isEmpty()) list = mutableSetOf(man) else list.add(man)
         }
     }
     return list
 }
 
 fun propagateHandshakes(friends: Map<String, Set<String>>): Map<String, Set<String>> = TODO() /*{
-    for (q in friends)
-        for (friend in friends) {
-
-        }
+    var hSh = mutableMapOf<String, Set<String>>()
+    hSh = friends.toMutableMap()
+    for ((k, v) in friends)
+        hSh[k] += whoAreNotInFirst(hSh[k], v, k)
     return
-}
-*/
+}*/
+
+
 /**
  * Простая
  *
@@ -262,6 +264,7 @@ fun propagateHandshakes(friends: Map<String, Set<String>>): Map<String, Set<Stri
  *   subtractOf(a = mutableMapOf("a" to "z"), mapOf("a" to "z"))
  *     -> a changes to mutableMapOf() aka becomes empty
  */
+
 fun subtractOf(a: MutableMap<String, String>, b: Map<String, String>): Unit {
     for ((k, el) in b)
         if (a[k] == el) a.remove(k)
@@ -273,6 +276,7 @@ fun subtractOf(a: MutableMap<String, String>, b: Map<String, String>): Unit {
  *
  * Для двух списков людей найти людей, встречающихся в обоих списках
  */
+
 fun whoAreInBoth(a: List<String>, b: List<String>): List<String> {
     var list = mutableListOf<String>()
     for (man in a) {
@@ -292,6 +296,7 @@ fun whoAreInBoth(a: List<String>, b: List<String>): List<String> {
  * Например:
  *   canBuildFrom(listOf('a', 'b', 'o'), "baobab") -> true
  */
+
 fun canBuildFrom(chars: List<Char>, word: String): Boolean {
     for (c in word) {
         if (!chars.contains(c)) return false
@@ -330,11 +335,13 @@ fun extractRepeats(list: List<String>): Map<String, Int> {
  */
 fun hasAnagrams(words: List<String>): Boolean {
     val m = mutableMapOf<Char, Int>()
-    for (word in words) {
-        for (el in word)
-            if (m[el] == null) m[el] = 1 else m[el] = m[el]!! + 1
-    }
-    return true
+    for (i in 0 until words.size)
+        for (j in i + 1 until words.size) {
+            val w1 = words[i].toSortedSet()
+            val w2 = words[j].toSortedSet()
+            if (w1.containsAll(w2) || w2.containsAll(w1)) return true
+        }
+    return false
 }
 
 /**
@@ -354,7 +361,13 @@ fun hasAnagrams(words: List<String>): Boolean {
  *   findSumOfTwo(listOf(1, 2, 3), 4) -> Pair(0, 2)
  *   findSumOfTwo(listOf(1, 2, 3), 6) -> Pair(-1, -1)
  */
-fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> = TODO()
+
+fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> {
+    for (i in 0 until list.size)
+        for (j in i + 1 until list.size)
+            if (list[i] + list[j] == number) return Pair(i, j)
+    return Pair(-1, -1)
+}
 
 /**
  * Очень сложная
