@@ -241,13 +241,19 @@ fun whoAreNotInFirst(a: Set<String>?, b: Set<String>, name: String): Set<String>
     return list
 }
 
-fun propagateHandshakes(friends: Map<String, Set<String>>): Map<String, Set<String>> = TODO() /*{
-    var hSh = mutableMapOf<String, Set<String>>()
-    hSh = friends.toMutableMap()
+fun propagateHandshakes(friends: Map<String, Set<String>>): Map<String, Set<String>> {
+    val hSh = mutableMapOf<String, Set<String>>()
+    for ((k, v) in friends) {
+        val frs = v.toMutableSet()
+        for ((k2, v2) in friends) {
+            if (frs.contains(k2)) frs += whoAreNotInFirst(frs, v2, k)
+        }
+        hSh[k] = frs.toSortedSet()
+    }
     for ((k, v) in friends)
-        hSh[k] += whoAreNotInFirst(hSh[k], v, k)
-    return
-}*/
+        for (man in v) if (!friends.containsKey(man)) hSh[man] = emptySet()
+    return hSh
+}
 
 
 /**
