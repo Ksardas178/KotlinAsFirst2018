@@ -347,7 +347,7 @@ fun hasAnagrams(words: List<String>): Boolean {
         for (j in i + 1 until words.size) {
             val w1 = words[i].toSortedSet()
             val w2 = words[j].toSortedSet()
-            if (w1.containsAll(w2) || w2.containsAll(w1)) return true
+            if (w1.containsAll(w2) && w2.containsAll(w1)) return true
         }
     return false
 }
