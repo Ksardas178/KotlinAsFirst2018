@@ -398,7 +398,7 @@ fun rExc(n: Int) = when (n) {
     17 -> "сем"
     18 -> "восем"
     19 -> "девят"
-    else -> rL3(n)
+    else -> rL3(n % 10)
 } + "надцать"
 
 fun russLast3(n: Int): List<String> {
@@ -424,11 +424,11 @@ fun russFirst3(n: Int): List<String> {
 fun russian(n: Int): String {
     val num = mutableListOf<String>()
     num += russFirst3(n / 1000)
-    if (n / 1000 != 0) num += when (n / 1000 % 10) {
+    if (n / 1000 != 0) if ((n / 1000 % 100 > 19) || (n / 1000 % 100 < 11)) num += when (n / 1000 % 10) {
         1 -> "тысяча"
         in 2..4 -> "тысячи"
         else -> "тысяч"
-    }
+    } else num += "тысяч"
     num += russLast3(n % 1000)
     //println(num.joinToString(separator = " "))
     return num.joinToString(separator = " ")

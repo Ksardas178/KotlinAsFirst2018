@@ -252,7 +252,7 @@ class Tests {
         )
         assertEquals(
                 listOf("Marat"),
-                whoAreInBoth(listOf("Marat", "Mikhail"), listOf("Marat", "Kirill"))
+                whoAreInBoth(listOf("Marat", "Marat", "Mikhail"), listOf("Marat", "Kirill"))
         )
         assertEquals(
                 emptyList<String>(),
@@ -264,7 +264,7 @@ class Tests {
     @Tag("Normal")
     fun canBuildFrom() {
         assertFalse(canBuildFrom(emptyList(), "foo"))
-        assertTrue(canBuildFrom(listOf('a', 'b', 'o'), "baobab"))
+        assertTrue(canBuildFrom(listOf('a', 'b', 'o'), "Baobab"))
         assertFalse(canBuildFrom(listOf('a', 'm', 'r'), "Marat"))
     }
 
@@ -325,6 +325,16 @@ class Tests {
                 bagPacking(
                         mapOf("Кубок" to (500 to 2000), "Слиток" to (1000 to 5000)),
                         450
+                )
+        )
+        assertEquals(
+                setOf("Колбаса", "Кольцо", "Перчатки", "Помада", "Носки", "Фонарик", "Слиток"),
+                bagPacking(
+                        mapOf("Кубок" to (500 to 2000), "Колбаса" to (200 to 80), "Кольцо" to (5 to 13000), "Сапоги" to (3000 to 8000),
+                                "Перчатки" to (10 to 500), "Помада" to (30 to 1000), "Арбуз" to (5000 to 300), "Кровать" to (20000 to 15000),
+                                "Носки" to (15 to 550), "Фонарик" to (1000 to 2500), "Палатка" to (4000 to 5000), "Банан" to (1000 to 70),
+                                "Еда" to (7000 to 5000), "Слиток" to (1000 to 5000)),
+                        2500
                 )
         )
     }

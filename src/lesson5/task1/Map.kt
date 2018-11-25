@@ -197,13 +197,15 @@ fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Doub
 fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): String? {
     var s = ""
     var cost = 0.0
+    var found = false
     for ((name, pair) in stuff) {
-        if ((pair.first == kind) && ((pair.second < cost) || (cost == 0.0))) {
+        if (pair.first == kind) if ((pair.second < cost) || ((cost == 0.0) && (found == false))) {
             s = name
+            found = true
             cost = pair.second
         }
     }
-    return if (s != "") s else null
+    return if (found) s else null
 }
 
 /**
@@ -235,7 +237,7 @@ fun whoAreNotInFirst(a: Set<String>?, b: Set<String>, name: String): Set<String>
     var list = mutableSetOf<String>()
     for (man in b) {
         if (!(a!!.contains(man)) && (man != name)) {
-            if (list.isEmpty()) list = mutableSetOf(man) else list.add(man)
+            if (list.isEmpty()) list = mutableSetOf(man) else if (!list.contains(man)) list.add(man)
         }
     }
     return list
@@ -287,7 +289,7 @@ fun whoAreInBoth(a: List<String>, b: List<String>): List<String> {
     var list = mutableListOf<String>()
     for (man in a) {
         if (b.contains(man)) {
-            if (list.isEmpty()) list = mutableListOf(man) else list.add(man)
+            if (list.isEmpty()) list = mutableListOf(man) else if (!list.contains(man)) list.add(man)
         }
     }
     return list
@@ -305,7 +307,7 @@ fun whoAreInBoth(a: List<String>, b: List<String>): List<String> {
 
 fun canBuildFrom(chars: List<Char>, word: String): Boolean {
     for (c in word) {
-        if (!chars.contains(c)) return false
+        if ((!chars.contains(c.toLowerCase())) && (!chars.contains(c.toUpperCase()))) return false
     }
     return true
 }
@@ -394,4 +396,24 @@ fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> {
  *     450
  *   ) -> emptySet()
  */
-fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<String> = TODO()
+
+data class Package(var things: Set<String>,/* var freeSpace: Int,*/ var cost: Int)
+
+fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<String> {
+    val variants = mutableMapOf<Int, Package>()
+    variants[0] = Package(emptySet(), 0)
+    var res = emptySet<String>()
+    var cost = 0
+    for (i in 0..capacity) {
+        variants[i] = Package(emptySet(), 0)
+        for ((thing, info) in treasures)//Пара (вес - цена)
+            if ((i - info.first) >= 0) if ((info.second + variants[i - info.first]!!.cost > cost) &&
+                    !variants[i - info.first]!!.things.contains(thing)) {
+                cost = info.second + variants[i - info.first]!!.cost
+                variants[i] = Package(variants[i - info.first]!!.things + setOf(thing), cost)
+                res = variants[i]!!.things
+            }
+        //println("Вместимость $i: ${variants[i]!!.things}")
+    }
+    return res
+}
