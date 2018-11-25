@@ -49,12 +49,10 @@ fun main(args: Array<String>) {
         val seconds = timeStrToSeconds(line)
         if (seconds == -1) {
             println("Введённая строка $line не соответствует формату ЧЧ:ММ:СС")
-        }
-        else {
+        } else {
             println("Прошло секунд с начала суток: $seconds")
         }
-    }
-    else {
+    } else {
         println("Достигнут <конец файла> в процессе чтения строки. Программа прервана")
     }
 }
@@ -74,21 +72,21 @@ fun main(args: Array<String>) {
 fun dateStrToDigit(str: String): String = TODO() /*{
     val parts = str.split(" ")
     var n = when (parts[2]) {
-        "января" -> 1
-        "февраля" -> 2
-        "марта" -> 3
-        "апреля" -> 4
-        "мая" -> 5
-        "июня" -> 6
-        "июля" -> 7
-        "августа" -> 8
-        "сентября" -> 9
-        "октября" -> 10
-        "ноября" -> 11
-        "декабря" -> 12
+        "января" -> "1"
+        "февраля" -> "2"
+        "марта" -> "3"
+        "апреля" -> "4"
+        "мая" -> "5"
+        "июня" -> "6"
+        "июля" -> "7"
+        "августа" -> "8"
+        "сентября" -> "9"
+        "октября" -> "10"
+        "ноября" -> "11"
+        "декабря" -> "12"
         else -> ""
     }
-} */
+}*/
 
 /**
  * Средняя
@@ -126,7 +124,11 @@ fun flattenPhoneNumber(phone: String): String = TODO()
  * Прочитать строку и вернуть максимальное присутствующее в ней число (717 в примере).
  * При нарушении формата входной строки или при отсутствии в ней чисел, вернуть -1.
  */
-fun bestLongJump(jumps: String): Int = TODO()
+fun bestLongJump(jumps: String): Int {
+    if (jumps.contains(Regex("""[^-%1234567890 ]"""))) return -1
+    val parts = Regex("""[-%]""").replace(jumps, "-1").split(" ")
+    return parts.toSortedSet().last().toInt()
+}
 
 /**
  * Сложная
@@ -138,7 +140,14 @@ fun bestLongJump(jumps: String): Int = TODO()
  * Прочитать строку и вернуть максимальную взятую высоту (230 в примере).
  * При нарушении формата входной строки вернуть -1.
  */
-fun bestHighJump(jumps: String): Int = TODO()
+fun bestHighJump(jumps: String): Int {
+    val str = Regex("""([ ])+[-%]+([ ])?""").replace(jumps, " ").split(" ")
+    var s = -1
+    for (i in 0..str.size - 2) {
+        if (!str[i + 1].isEmpty()) if ((str[i + 1].last() == '+') && (str[i].toInt() > s)) s = str[i].toInt()
+    }
+    return s
+}
 
 /**
  * Сложная
