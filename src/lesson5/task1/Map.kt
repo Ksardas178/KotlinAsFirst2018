@@ -99,7 +99,7 @@ fun addPhone(mapA: Map<String, String>, mapB: Map<String, String>, needed: Mutab
     for ((nameA, numberA) in mapA) needed[nameA] = mutableListOf(numberA)
     for ((nameB, numberB) in mapB) {
         if (needed[nameB] != null) {
-            if (numberB != mapA[nameB]) needed[nameB]?.add(numberB)
+            if (numberB != mapA[nameB]) needed[nameB]!!.add(numberB)
         } else needed[nameB] = mutableListOf(numberB)
     }
 }
@@ -128,7 +128,7 @@ fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<S
 fun buildGrades(grades: Map<String, Int>): Map<Int, List<String>> {
     val st = mutableMapOf<Int, MutableList<String>>()
     for ((student, grade) in grades) {
-        if (st[grade] == null) st[grade] = mutableListOf(student) else st[grade]?.add(student)
+        if (st[grade] == null) st[grade] = mutableListOf(student) else st[grade]!!.add(student)
     }
     return st
 }
@@ -171,7 +171,7 @@ fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Doub
     val prod = mutableMapOf<String, MutableList<Double>>()
     val aver = mutableMapOf<String, Double>()
     for ((name, cost) in stockPrices) {
-        if (prod[name] == null) prod[name] = mutableListOf(cost) else prod[name]?.add(cost)
+        if (prod[name] == null) prod[name] = mutableListOf(cost) else prod[name]!!.add(cost)
     }
     for ((name, cost) in prod) {
         aver[name] = mean(prod[name]!!)
@@ -342,7 +342,6 @@ fun extractRepeats(list: List<String>): Map<String, Int> {
  *   hasAnagrams(listOf("тор", "свет", "рот")) -> true
  */
 fun hasAnagrams(words: List<String>): Boolean {
-    val m = mutableMapOf<Char, Int>()
     for (i in 0 until words.size)
         for (j in i + 1 until words.size) {
             val w1 = words[i].toSortedSet()
@@ -397,7 +396,7 @@ fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> {
  *   ) -> emptySet()
  */
 
-data class Package(var things: Set<String>,/* var freeSpace: Int,*/ var cost: Int)
+data class Package(val things: Set<String>,/* var freeSpace: Int,*/ val cost: Int)
 
 fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<String> {
     val variants = mutableMapOf<Int, Package>()
