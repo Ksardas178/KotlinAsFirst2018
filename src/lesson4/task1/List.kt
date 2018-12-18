@@ -314,14 +314,6 @@ fun decimalFromString(str: String, base: Int): Int {
  * 90 = XC, 100 = C, 400 = CD, 500 = D, 900 = CM, 1000 = M.
  * Например: 23 = XXIII, 44 = XLIV, 100 = C
  */
-fun rF(n: Int) = when (n) {
-    0 -> null
-    1 -> ""
-    2 -> ""
-    3 -> ""
-    4 -> ""
-    else -> ""
-}
 
 fun roman(n: Int): String {
     var i = 0
@@ -335,7 +327,8 @@ fun roman(n: Int): String {
             in 0..3 -> for (j in 1..base) sb.append(s10[i])
             4 -> sb.append(s5[i] + s10[i])
             in 5..8 -> {
-                for (j in 6..base) sb.append(s10[i]); sb.append(s5[i])
+                for (j in 6..base) sb.append(s10[i])
+                sb.append(s5[i])
             }
             9 -> sb.append(s10[i + 1] + s10[i])
         }
@@ -424,7 +417,8 @@ fun russFirst3(n: Int): List<String> {
 fun russian(n: Int): String {
     val num = mutableListOf<String>()
     num += russFirst3(n / 1000)
-    if (n / 1000 != 0) if ((n / 1000 % 100 > 19) || (n / 1000 % 100 < 11)) num += when (n / 1000 % 10) {
+    if (n / 1000 != 0)
+        if ((n / 1000 % 100 > 19) || (n / 1000 % 100 < 11)) num += when (n / 1000 % 10) {
         1 -> "тысяча"
         in 2..4 -> "тысячи"
         else -> "тысяч"

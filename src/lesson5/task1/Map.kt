@@ -2,6 +2,8 @@
 
 package lesson5.task1
 
+import lesson4.task1.mean
+
 /**
  * Пример
  *
@@ -161,12 +163,6 @@ fun containsIn(a: Map<String, String>, b: Map<String, String>): Boolean {
  *     -> mapOf("MSFT" to 150.0, "NFLX" to 40.0)
  */
 
-fun mean(list: MutableList<Double>) = if (list.isEmpty()) {
-    0.0
-} else {
-    list.sum() / list.size
-}
-
 fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Double> {
     val prod = mutableMapOf<String, MutableList<Double>>()
     val aver = mutableMapOf<String, Double>()
@@ -199,7 +195,7 @@ fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): S
     var cost = 0.0
     var found = false
     for ((name, pair) in stuff) {
-        if (pair.first == kind) if ((pair.second < cost) || ((cost == 0.0) && (found == false))) {
+        if (pair.first == kind) if ((pair.second < cost) || ((cost == 0.0) && !found)) {
             s = name
             found = true
             cost = pair.second
@@ -234,13 +230,13 @@ fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): S
  */
 
 fun whoAreNotInFirst(a: Set<String>?, b: Set<String>, name: String): Set<String> {
-    var list = mutableSetOf<String>()
+    var set = mutableSetOf<String>()
     for (man in b) {
         if (!(a!!.contains(man)) && (man != name)) {
-            if (list.isEmpty()) list = mutableSetOf(man) else if (!list.contains(man)) list.add(man)
+            if (set.isEmpty()) set = mutableSetOf(man) else if (!set.contains(man)) set.add(man)
         }
     }
-    return list
+    return set
 }
 
 fun propagateHandshakes(friends: Map<String, Set<String>>): Map<String, Set<String>> {
