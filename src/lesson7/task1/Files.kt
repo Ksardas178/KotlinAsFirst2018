@@ -64,14 +64,18 @@ fun countSubstrings(inputName: String, substrings: List<String>): Map<String, In
         for (j in 0 until substrings[i].length - 1)//Резервируем ячейки под буквы
             arr[i].add(0)
     }
+    for (i in 0 until substrings.size) vhozhd[substrings[i]] = 0
     while (c != -1) {
         for (i in 0 until substrings.size)//Для каждой подстроки
             for (j in (substrings[i].length - 1) downTo (0))//Для каждого элемента списка этой строки
-                if (substrings[i][j].toLowerCase() == c.toChar().toLowerCase()) {//Если буква в слове совпадает
+                if (substrings[i][j].toLowerCase() == c.toChar().toLowerCase() && ((j == 0) || (arr[i][j - 1] == 1))) {//Если буква в слове совпадает
                     when (j) {//И она...
-                        substrings[i].length - 1 -> if (vhozhd[substrings[i]] != null) vhozhd[substrings[i]]!!.inc()
-                        else vhozhd[substrings[i]] = 1//..последняя, заполняем map (arr[i][j] заменится elsом)
-                        0 -> arr[i][j] = 1//..первая, то записываем новое слово (начало)
+                        (substrings[i].length - 1) -> if (vhozhd[substrings[i]] != null) vhozhd[substrings[i]] = vhozhd[substrings[i]]!! + 1
+                        else {
+                            vhozhd[substrings[i]] = 1
+                            arr[i][j] = 0
+                        }//..последняя, заполняем map (arr[i][j] заменится elsом)
+                        0 -> arr[i][0] = 1//..первая, то записываем новое слово (начало)
                         else -> arr[i][j] = arr[i][j - 1]//..посередине, то двигаем метку к концу слова
                     }
                 } else arr[i][j] = 0//Иначе обнуляем весь прогресс посимвольного распознавания
